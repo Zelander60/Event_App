@@ -8,10 +8,24 @@ import {
   useColorScheme,
 } from "react-native";
 import React, { useState } from "react";
-import { MaterialIcons, FontAwesome } from "@expo/vector-icons";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { COLORS } from "../../../constants/theme";
 import { useRouter } from "expo-router";
 import useAuthStore from "../../../store/useAuthStore";
+import { useForm, Controller } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
+
+const signInSchema = z.object({
+  email: z.string().email("Invalid email address"),
+  password: z.string().min(6, "Password must be at least 6 characters"),
+});
+
+const signUpSchema = z.object({
+  fullName: z.string().min(3, "Full name must be at least 3 characters"),
+  email: z.string().email("Invalid email address"),
+  password: z.string().min(6, "Password must be at least 6 characters"),
+});
 
 const AuthScreen = ({ type }) => {
   const [showPassword, setShowPassword] = useState(false);
@@ -19,10 +33,21 @@ const AuthScreen = ({ type }) => {
   const { login } = useAuthStore();
 
   const isSignIn = type === "sign-in";
+  const schema = isSignIn ? signInSchema : signUpSchema;
 
-  const handleAuth = () => {
-    login({ name: "Alex Johnson" });
-    router.replace("/(tabs)/home");
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: zodResolver(schema),
+  });
+
+  const handleAuth = (data) => {
+    // In a real app, you'd make an API call here.
+    // For this demo, we'll just update the store and navigate.
+    login({ name: data.fullName || "Jessica" });
+    router.replace("/(protected)/home");
   };
 
   return (
@@ -43,8 +68,8 @@ const AuthScreen = ({ type }) => {
 
         <View className="absolute inset-0 flex-col justify-end px-6 pb-12">
           <View className="flex-row items-center gap-2 mb-2">
-            <MaterialIcons
-              name="confirmation-number"
+            <MaterialCommunityIcons
+              name="ticket-confirmation-outline"
               size={32}
               color={COLORS.primary}
             />
@@ -102,110 +127,124 @@ const AuthScreen = ({ type }) => {
 
         <View className="space-y-4">
           {!isSignIn && (
-            <View className="space-y-1.5">
-              <Text className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                Full Name
-              </Text>
-              <View className="relative flex-row items-center">
-                <MaterialIcons
-                  name="badge"
-                  size={24}
-                  color="#9CA3AF"
-                  style={{ position: "absolute", left: 16 }}
-                />
-                <TextInput
-                  className="flex-1 pl-12 pr-4 py-3.5 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl text-gray-900 dark:text-white placeholder-gray-400"
-                  placeholder="John Doe"
-                />
-              </View>
-            </View>
+            <Controller
+              control={control}
+              name="fullName"
+              render={({ field: { onChange, onBlur, value } }) => (
+                <View className="space-y-1.5">
+                  <Text className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                    Full Name
+                  </Text>
+                  <View className="relative flex-row items-center">
+                    <MaterialCommunityIcons
+                      name="account-card-outline"
+                      size={24}
+                      color="#9CA3AF"
+                      style={{ position: "absolute", left: 16 }}
+                    />
+                    <TextInput
+                      className="flex-1 pl-12 pr-4 py-3.5 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl text-gray-900 dark:text-white placeholder-gray-400"
+                      placeholder="John Doe"
+                      onBlur={onBlur}
+                      onChangeText={onChange}
+                      value={value}
+                    />
+                  </View>
+                  {errors.fullName && (
+                    <Text className="text-red-500 text-xs">
+                      {errors.fullName.message}
+                    </Text>
+                  )}
+                </View>
+              )}
+            />
           )}
-          <View className="space-y-1.5">
-            <Text className="text-sm font-medium text-gray-700 dark:text-gray-300">
-              Email Address
-            </Text>
-            <View className="relative flex-row items-center">
-              <MaterialIcons
-                name="mail"
-                size={24}
-                color="#9CA3AF"
-                style={{ position: "absolute", left: 16 }}
-              />
-              <TextInput
-                className="flex-1 pl-12 pr-4 py-3.5 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl text-gray-900 dark:text-white placeholder-gray-400"
-                placeholder="name@example.com"
-                keyboardType="email-address"
-              />
-            </View>
-          </View>
-          <View className="space-y-1.5">
-            <Text className="text-sm font-medium text-gray-700 dark:text-gray-300">
-              Password
-            </Text>
-            <View className="relative flex-row items-center">
-              <MaterialIcons
-                name="lock"
-                size={24}
-                color="#9CA3AF"
-                style={{ position: "absolute", left: 16 }}
-              />
-              <TextInput
-                className="flex-1 pl-12 pr-12 py-3.5 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl text-gray-900 dark:text-white placeholder-gray-400"
-                placeholder={
-                  isSignIn ? "Enter your password" : "Create a secure password"
-                }
-                secureTextEntry={!showPassword}
-              />
-              <TouchableOpacity
-                className="absolute right-4"
-                onPress={() => setShowPassword(!showPassword)}
-              >
-                <MaterialIcons
-                  name={showPassword ? "visibility" : "visibility-off"}
-                  size={20}
-                  color="#9CA3AF"
-                />
-              </TouchableOpacity>
-            </View>
-          </View>
+          <Controller
+            control={control}
+            name="email"
+            render={({ field: { onChange, onBlur, value } }) => (
+              <View className="space-y-1.5">
+                <Text className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                  Email Address
+                </Text>
+                <View className="relative flex-row items-center">
+                  <MaterialCommunityIcons
+                    name="email-outline"
+                    size={24}
+                    color="#9CA3AF"
+                    style={{ position: "absolute", left: 16 }}
+                  />
+                  <TextInput
+                    className="flex-1 pl-12 pr-4 py-3.5 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl text-gray-900 dark:text-white placeholder-gray-400"
+                    placeholder="name@example.com"
+                    keyboardType="email-address"
+                    onBlur={onBlur}
+                    onChangeText={onChange}
+                    value={value}
+                  />
+                </View>
+                {errors.email && (
+                  <Text className="text-red-500 text-xs">
+                    {errors.email.message}
+                  </Text>
+                )}
+              </View>
+            )}
+          />
+          <Controller
+            control={control}
+            name="password"
+            render={({ field: { onChange, onBlur, value } }) => (
+              <View className="space-y-1.5">
+                <Text className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                  Password
+                </Text>
+                <View className="relative flex-row items-center">
+                  <MaterialCommunityIcons
+                    name="lock-outline"
+                    size={24}
+                    color="#9CA3AF"
+                    style={{ position: "absolute", left: 16 }}
+                  />
+                  <TextInput
+                    className="flex-1 pl-12 pr-12 py-3.5 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl text-gray-900 dark:text-white placeholder-gray-400"
+                    placeholder={
+                      isSignIn
+                        ? "Enter your password"
+                        : "Create a secure password"
+                    }
+                    secureTextEntry={!showPassword}
+                    onBlur={onBlur}
+                    onChangeText={onChange}
+                    value={value}
+                  />
+                  <TouchableOpacity
+                    className="absolute right-4"
+                    onPress={() => setShowPassword(!showPassword)}
+                  >
+                    <MaterialCommunityIcons
+                      name={showPassword ? "eye-outline" : "eye-off-outline"}
+                      size={20}
+                      color="#9CA3AF"
+                    />
+                  </TouchableOpacity>
+                </View>
+                {errors.password && (
+                  <Text className="text-red-500 text-xs">
+                    {errors.password.message}
+                  </Text>
+                )}
+              </View>
+            )}
+          />
           <TouchableOpacity
             className="w-full bg-primary py-4 rounded-xl shadow-lg shadow-primary/25 flex-row justify-center items-center gap-2"
-            onPress={handleAuth}
+            onPress={handleSubmit(handleAuth)}
           >
             <Text className="text-white font-bold text-base">
               {isSignIn ? "Log In" : "Get Started"}
             </Text>
-            <MaterialIcons name="arrow-forward" size={20} color="white" />
-          </TouchableOpacity>
-        </View>
-        <View className="relative my-8">
-          <View className="absolute inset-0 flex-row items-center">
-            <View className="w-full border-t border-gray-200 dark:border-slate-700" />
-          </View>
-          <View className="relative flex-row justify-center">
-            <Text className="px-4 bg-background-light dark:bg-background-dark text-gray-500 dark:text-gray-400 font-medium">
-              Or continue with
-            </Text>
-          </View>
-        </View>
-
-        {/* Social Logins */}
-        <View className="flex-row gap-4">
-          <TouchableOpacity className="flex-1 flex-row items-center justify-center gap-2 py-3 px-4 rounded-xl border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800">
-            <FontAwesome name="google" size={20} color="#4285F4" />
-            <Text className="text-sm font-semibold text-gray-700 dark:text-gray-300">
-              Google
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity className="flex-1 flex-row items-center justify-center gap-2 py-3 px-4 rounded-xl border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800">
-            <FontAwesome
-              name="apple"
-              size={20}
-              color={useColorScheme() === 'dark' ? "white" : "black"}
-            />
-            <Text className="text-sm font-semibold text-gray-700 dark:text-gray-300">
-              Apple
-            </Text>
+            <MaterialCommunityIcons name="arrow-right" size={20} color="white" />
           </TouchableOpacity>
         </View>
       </View>

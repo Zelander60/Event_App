@@ -8,8 +8,7 @@ import {
   ImageBackground,
 } from "react-native";
 import React, { useEffect, useState } from "react";
-import { MaterialIcons } from "@expo/vector-icons";
-import { COLORS } from "../../constants/theme";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import {
   categories,
   featuredEvents,
@@ -20,7 +19,13 @@ import useEventStore from "../../store/useEventStore";
 
 const Home = () => {
   const router = useRouter();
-  const { setEvents, filteredEvents, filterEvents } = useEventStore();
+  const {
+    setEvents,
+    filteredEvents,
+    filterEvents,
+    searchQuery,
+    setSearchQuery,
+  } = useEventStore();
   const [activeCategory, setActiveCategory] = useState("All Events");
 
   useEffect(() => {
@@ -62,8 +67,8 @@ const Home = () => {
             className="relative w-10 h-10 items-center justify-center rounded-full bg-surface-light dark:bg-surface-dark border border-gray-200 dark:border-white/5"
             onPress={() => router.push("/(app)/notifications")}
           >
-            <MaterialIcons
-              name="notifications-none"
+            <MaterialCommunityIcons
+              name="bell-outline"
               size={24}
               color="#4B5563"
             />
@@ -73,11 +78,13 @@ const Home = () => {
         <View className="px-4 pb-4 space-y-3">
           <View className="relative w-full">
             <View className="absolute inset-y-0 left-0 pl-3 flex-row items-center">
-              <MaterialIcons name="search" size={22} color="#9CA3AF" />
+              <MaterialCommunityIcons name="magnify" size={22} color="#9CA3AF" />
             </View>
             <TextInput
               className="w-full pl-10 pr-4 py-3 bg-surface-light dark:bg-surface-dark border border-gray-200 dark:border-white/10 rounded-xl text-sm placeholder-gray-400"
               placeholder="Search by name, artist, venue..."
+              value={searchQuery}
+              onChangeText={setSearchQuery}
             />
           </View>
         </View>
@@ -119,7 +126,7 @@ const Home = () => {
             <Text className="text-lg font-bold tracking-tight">
               Featured Events
             </Text>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => handleFilter("All Events")}>
               <Text className="text-primary text-xs font-semibold">
                 See All
               </Text>
@@ -168,8 +175,8 @@ const Home = () => {
                         {event.title}
                       </Text>
                       <View className="flex-row items-center text-gray-300 text-xs mb-3">
-                        <MaterialIcons
-                          name="location-on"
+                        <MaterialCommunityIcons
+                          name="map-marker-outline"
                           size={14}
                           color="#D1D5DB"
                           style={{ marginRight: 4 }}
@@ -183,8 +190,8 @@ const Home = () => {
                           {event.price}
                         </Text>
                         <TouchableOpacity className="w-8 h-8 bg-white/20 items-center justify-center rounded-full">
-                          <MaterialIcons
-                            name="arrow-forward"
+                          <MaterialCommunityIcons
+                            name="arrow-right"
                             size={18}
                             color="white"
                           />
@@ -223,8 +230,8 @@ const Home = () => {
                           {event.category}
                         </Text>
                         <TouchableOpacity>
-                          <MaterialIcons
-                            name="bookmark-border"
+                          <MaterialCommunityIcons
+                            name="bookmark-outline"
                             size={18}
                             color="#9CA3AF"
                           />
@@ -234,8 +241,8 @@ const Home = () => {
                         {event.title}
                       </Text>
                       <View className="flex-row items-center gap-1 text-xs text-gray-500 dark:text-gray-400">
-                        <MaterialIcons
-                          name="calendar-today"
+                        <MaterialCommunityIcons
+                          name="calendar-month-outline"
                           size={12}
                           color="#6B7280"
                         />
@@ -246,8 +253,8 @@ const Home = () => {
                     </View>
                     <View className="flex-row items-center justify-between mt-1">
                       <View className="flex-row items-center gap-1 text-xs text-gray-500 dark:text-gray-400 max-w-[60%]">
-                        <MaterialIcons
-                          name="location-on"
+                        <MaterialCommunityIcons
+                          name="map-marker-outline"
                           size={12}
                           color="#6B7280"
                         />
