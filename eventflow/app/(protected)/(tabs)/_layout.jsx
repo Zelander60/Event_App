@@ -4,7 +4,6 @@ import { COLORS } from "../../../constants/theme";
 import useAuthStore from "../../../store/useAuthStore";
 
 const TabsLayout = () => {
-  const { user } = useAuthStore();
   return (
     <Tabs
       screenOptions={{

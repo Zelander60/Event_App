@@ -6,7 +6,3 @@ Starting project at /app/eventflow
 Starting Metro Bundler
 Waiting on http://localhost:8081
 Logs for your project will appear below.
-Web Bundling failed 624ms node_modules/expo-router/entry.js (1 module)
-error: node_modules/expo-router/entry.js: [BABEL] /app/eventflow/node_modules/expo-router/entry.js: .plugins is not a valid Plugin property
-Web Bundling failed 8ms node_modules/expo-router/entry.js (1 module)
-error: node_modules/expo-router/entry.js: [BABEL] /app/eventflow/node_modules/expo-router/entry.js: .plugins is not a valid Plugin property
