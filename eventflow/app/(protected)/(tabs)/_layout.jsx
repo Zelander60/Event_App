@@ -1,6 +1,7 @@
 import { Tabs } from "expo-router";
 import { MaterialIcons } from "@expo/vector-icons";
 import { COLORS } from "../../../constants/theme";
+import useAuthStore from "../../../store/useAuthStore";
 
 const TabsLayout = () => {
   return (

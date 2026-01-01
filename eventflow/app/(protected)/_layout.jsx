@@ -8,7 +8,7 @@ const ProtectedLayout = () => {
 
   useEffect(() => {
     if (!user) {
-      router.replace("/(auth)/sign-in");
+      router.replace("/(app)");
     }
   }, [user]);
 
