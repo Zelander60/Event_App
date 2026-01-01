@@ -1,12 +1,22 @@
-import { Stack } from "expo-router";
+import { Stack, useRouter } from "expo-router";
+import React, { useEffect } from "react";
+import useAuthStore from "../../store/useAuthStore";
 
-export default function CeoLayout() {
+const CeoLayout = () => {
+  const { user } = useAuthStore();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!user || user.role !== "ceo") {
+      router.replace("/(app)");
+    }
+  }, [user]);
+
   return (
     <Stack>
-      <Stack.Screen name="dashboard" options={{ headerShown: false }} />
-      <Stack.Screen name="create-event" options={{ headerShown: false }} />
-      <Stack.Screen name="manage-attendees" options={{ headerShown: false }} />
-      <Stack.Screen name="analytics" options={{ headerShown: false }} />
+      <Stack.Screen name="index" options={{ headerShown: false }} />
     </Stack>
   );
-}
+};
+
+export default CeoLayout;

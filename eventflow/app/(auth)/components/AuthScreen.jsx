@@ -6,6 +6,7 @@ import {
   TextInput,
   ScrollView,
   useColorScheme,
+  ActivityIndicator,
 } from "react-native";
 import React, { useState } from "react";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -43,11 +44,25 @@ const AuthScreen = ({ type }) => {
     resolver: zodResolver(schema),
   });
 
-  const handleAuth = (data) => {
-    // In a real app, you'd make an API call here.
-    // For this demo, we'll just update the store and navigate.
-    login({ name: data.fullName || "Jessica" });
-    router.replace("/(protected)/home");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const handleAuth = async (data) => {
+    setLoading(true);
+    setError(null);
+    try {
+      const user = await login(data.email, data.password);
+      if (user.role === "admin") {
+        router.replace("/(admin)");
+      } else if (user.role === "ceo") {
+        router.replace("/(ceo)");
+      } else {
+        router.replace("/(protected)/home");
+      }
+    } catch (error) {
+      setError(error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -237,14 +252,28 @@ const AuthScreen = ({ type }) => {
               </View>
             )}
           />
+          {error && (
+            <Text className="text-red-500 text-center mb-4">{error}</Text>
+          )}
           <TouchableOpacity
             className="w-full bg-primary py-4 rounded-xl shadow-lg shadow-primary/25 flex-row justify-center items-center gap-2"
             onPress={handleSubmit(handleAuth)}
+            disabled={loading}
           >
-            <Text className="text-white font-bold text-base">
-              {isSignIn ? "Log In" : "Get Started"}
-            </Text>
-            <MaterialCommunityIcons name="arrow-right" size={20} color="white" />
+            {loading ? (
+              <ActivityIndicator color="white" />
+            ) : (
+              <>
+                <Text className="text-white font-bold text-base">
+                  {isSignIn ? "Log In" : "Get Started"}
+                </Text>
+                <MaterialCommunityIcons
+                  name="arrow-right"
+                  size={20}
+                  color="white"
+                />
+              </>
+            )}
           </TouchableOpacity>
         </View>
       </View>
