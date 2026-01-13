@@ -6,5 +6,5 @@ Starting project at /app/eventflow
 Starting Metro Bundler
 Waiting on http://localhost:8081
 Logs for your project will appear below.
-Web Bundled 1629ms node_modules/expo-router/entry.js (860 modules)
+Web Bundled 996ms node_modules/expo-router/entry.js (806 modules)
  LOG  [web] Logs will appear in the browser console
