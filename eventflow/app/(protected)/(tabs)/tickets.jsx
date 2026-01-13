@@ -8,7 +8,7 @@ import {
 import React from "react";
 import { styled } from "nativewind";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { tickets } from "../../constants/data";
+import { tickets } from "../../../constants/data";
 
 const StyledView = styled(View);
 const StyledText = styled(Text);

@@ -2,7 +2,7 @@ import { View, Text, ScrollView, TouchableOpacity } from "react-native";
 import React, { useState } from "react";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
-import { upcomingEvents } from "../../constants/data";
+import { upcomingEvents } from "../../../constants/data";
 
 const Calendar = () => {
   const router = useRouter();
