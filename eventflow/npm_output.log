@@ -1,5 +1,11 @@
 
 > eventflow@1.0.0 start
-> expo start
+> expo start --clear
 
 Starting project at /app/eventflow
+Starting Metro Bundler
+warning: Bundler cache is empty, rebuilding (this may take a minute)
+Waiting on http://localhost:8081
+Logs for your project will appear below.
+Web Bundled 10456ms node_modules/expo-router/entry.js (835 modules)
+ LOG  [web] Logs will appear in the browser console
