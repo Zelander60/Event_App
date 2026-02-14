@@ -6,14 +6,8 @@ import {
   Image,
 } from "react-native";
 import React from "react";
-import { styled } from "nativewind";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
-
-const StyledView = styled(View);
-const StyledText = styled(Text);
-const StyledScrollView = styled(ScrollView);
-const StyledTouchableOpacity = styled(TouchableOpacity);
 
 const Notifications = () => {
   const router = useRouter();
@@ -56,50 +50,50 @@ const Notifications = () => {
   ];
 
   return (
-    <StyledScrollView
+    <ScrollView
       className="flex-1 bg-background-light dark:bg-background-dark"
       showsVerticalScrollIndicator={false}
     >
-      <StyledView className="sticky top-0 z-20 flex-row items-center justify-between p-4 bg-background-light/95 dark:bg-background-dark/95 backdrop-blur-md border-b border-slate-200 dark:border-white/5">
-        <StyledTouchableOpacity
+      <View className="sticky top-0 z-20 flex-row items-center justify-between p-4 bg-background-light/95 dark:bg-background-dark/95 backdrop-blur-md border-b border-slate-200 dark:border-white/5">
+        <TouchableOpacity
           className="w-10 h-10 items-center justify-center rounded-full"
           onPress={() => router.back()}
         >
           <MaterialCommunityIcons name="arrow-left" size={24} color="#4B5563" />
-        </StyledTouchableOpacity>
-        <StyledText className="text-lg font-bold">Notifications</StyledText>
-        <StyledView className="flex-row items-center gap-2">
-          <StyledTouchableOpacity className="w-10 h-10 items-center justify-center rounded-full">
+        </TouchableOpacity>
+        <Text className="text-lg font-bold">Notifications</Text>
+        <View className="flex-row items-center gap-2">
+          <TouchableOpacity className="w-10 h-10 items-center justify-center rounded-full">
             <MaterialCommunityIcons
               name="playlist-check"
               size={24}
               color="#10b981"
             />
-          </StyledTouchableOpacity>
-          <StyledTouchableOpacity className="w-10 h-10 items-center justify-center rounded-full">
+          </TouchableOpacity>
+          <TouchableOpacity className="w-10 h-10 items-center justify-center rounded-full">
             <MaterialCommunityIcons name="cog" size={24} color="#4B5563" />
-          </StyledTouchableOpacity>
-        </StyledView>
-      </StyledView>
+          </TouchableOpacity>
+        </View>
+      </View>
 
-      <StyledView className="flex-none px-4 py-3 border-b border-slate-200 dark:border-white/5 bg-background-light dark:bg-background-dark">
-        <StyledScrollView horizontal showsHorizontalScrollIndicator={false}>
-          <StyledView className="flex-row gap-3">
-            <StyledTouchableOpacity className="h-9 shrink-0 items-center justify-center px-5 rounded-full bg-primary">
-              <StyledText className="text-sm font-bold text-white">All</StyledText>
-            </StyledTouchableOpacity>
-            <StyledTouchableOpacity className="h-9 shrink-0 items-center justify-center px-5 rounded-full bg-white dark:bg-surface-dark border border-slate-200 dark:border-white/5">
-              <StyledText className="text-sm font-medium text-slate-600 dark:text-slate-300">
+      <View className="flex-none px-4 py-3 border-b border-slate-200 dark:border-white/5 bg-background-light dark:bg-background-dark">
+        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+          <View className="flex-row gap-3">
+            <TouchableOpacity className="h-9 shrink-0 items-center justify-center px-5 rounded-full bg-primary">
+              <Text className="text-sm font-bold text-white">All</Text>
+            </TouchableOpacity>
+            <TouchableOpacity className="h-9 shrink-0 items-center justify-center px-5 rounded-full bg-white dark:bg-surface-dark border border-slate-200 dark:border-white/5">
+              <Text className="text-sm font-medium text-slate-600 dark:text-slate-300">
                 Unread
-              </StyledText>
-            </StyledTouchableOpacity>
-          </StyledView>
-        </StyledScrollView>
-      </StyledView>
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </ScrollView>
+      </View>
 
-      <StyledView className="mt-2">
+      <View className="mt-2">
         {notifications.map((notification) => (
-          <StyledView
+          <View
             key={notification.id}
             className={`flex-row items-start gap-4 px-4 py-4 ${
               notification.type === "new"
@@ -107,7 +101,7 @@ const Notifications = () => {
                 : ""
             }`}
           >
-            <StyledView
+            <View
               className={`w-12 h-12 items-center justify-center rounded-xl ${
                 notification.icon === "trending-up"
                   ? "bg-primary"
@@ -121,24 +115,24 @@ const Notifications = () => {
                   notification.icon === "trending-up" ? "white" : "#4B5563"
                 }
               />
-            </StyledView>
-            <StyledView className="flex-1 flex-col gap-1">
-              <StyledView className="flex-row justify-between items-start">
-                <StyledText className="text-sm font-bold leading-tight text-slate-900 dark:text-white pr-2">
+            </View>
+            <View className="flex-1 flex-col gap-1">
+              <View className="flex-row justify-between items-start">
+                <Text className="text-sm font-bold leading-tight text-slate-900 dark:text-white pr-2">
                   {notification.title}
-                </StyledText>
-                <StyledText className="text-[10px] font-medium text-slate-400 whitespace-nowrap">
+                </Text>
+                <Text className="text-[10px] font-medium text-slate-400 whitespace-nowrap">
                   {notification.time}
-                </StyledText>
-              </StyledView>
-              <StyledText className="text-xs text-slate-600 dark:text-slate-300 line-clamp-2">
+                </Text>
+              </View>
+              <Text className="text-xs text-slate-600 dark:text-slate-300 line-clamp-2">
                 {notification.message}
-              </StyledText>
-            </StyledView>
-          </StyledView>
+              </Text>
+            </View>
+          </View>
         ))}
-      </StyledView>
-    </StyledScrollView>
+      </View>
+    </ScrollView>
   );
 };
 
