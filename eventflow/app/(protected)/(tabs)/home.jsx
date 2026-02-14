@@ -13,9 +13,9 @@ import {
   categories,
   featuredEvents,
   upcomingEvents,
-} from "../../constants/data";
+} from "../../../constants/data";
 import { useRouter } from "expo-router";
-import useEventStore from "../../store/useEventStore";
+import useEventStore from "../../../store/useEventStore";
 
 const Home = () => {
   const router = useRouter();

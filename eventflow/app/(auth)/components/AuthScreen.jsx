@@ -74,7 +74,7 @@ const AuthScreen = ({ type }) => {
               color={COLORS.primary}
             />
             <Text className="text-white text-lg font-bold tracking-wide uppercase opacity-90">
-              TicketFlow
+              EventFlow
             </Text>
           </View>
           <Text className="text-white text-3xl font-extrabold leading-tight tracking-tight">
