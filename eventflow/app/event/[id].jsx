@@ -10,13 +10,11 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useRouter, useLocalSearchParams } from "expo-router";
 import { featuredEvents, upcomingEvents } from "../../constants/data";
 import useEventStore from "../../store/useEventStore";
-import useAuthStore from "../../store/useAuthStore";
 
 const EventDetails = () => {
   const router = useRouter();
   const { id } = useLocalSearchParams();
   const { cart, addToCart, removeFromCart, getCartTotal } = useEventStore();
-  const { user } = useAuthStore();
 
   const event =
     featuredEvents.find((e) => e.id === id) ||
@@ -149,16 +147,10 @@ const EventDetails = () => {
             </View>
             <TouchableOpacity
               className="h-12 px-8 rounded-xl bg-primary flex-row items-center justify-center gap-2"
-              onPress={() => {
-                if (user) {
-                  router.push("/(app)/checkout");
-                } else {
-                  router.push("/(auth)/sign-in");
-                }
-              }}
+              onPress={() => router.push("/(app)/checkout")}
             >
               <Text className="text-white font-bold text-base">
-                {user ? "Buy Tickets" : "Login to Buy"}
+                Buy Tickets
               </Text>
               <MaterialCommunityIcons name="arrow-right" size={20} color="white" />
             </TouchableOpacity>
